@@ -1,0 +1,14 @@
+*.d
+*.o
+*.log
+*.sh
+*.a
+*.so
+
+sdcard.img
+initrd.img
+sbi-qemu
+sbi_qemu
+kernel-qemu
+kernel_qemu
+target/

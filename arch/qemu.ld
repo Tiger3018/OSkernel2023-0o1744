@@ -1,4 +1,4 @@
-/* https://gitlab.eduxiji.net/2019301887/oskernel2022-npucore/-/raw/master/os/src/linker-qemu.ld */
+/* https://github.com/rcore-os/rCore-Tutorial-v3/blob/main/os/src/linker-qemu.ld */
 OUTPUT_ARCH(riscv)
 ENTRY(_start)
 BASE_ADDRESS = 0x80200000;

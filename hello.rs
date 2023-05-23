@@ -1,20 +1,25 @@
 #![no_main]
 #![no_std]
-#![feature(lang_items)]
+#![feature(lang_items)] // for what
+#![feature(panic_info_message)]
+// #![warn(missing_docs)]
 
-use core::panic::PanicInfo;
 
-//fn main() {
-    //println!("help");
-    //0;
-//}
+mod os;
+mod arch;
+// use crate::task::{Signals, SignalStack};
+// use riscv::register::sstatus::{self, set_spp, Sstatus, SPP};
 
+/// TODO
+/// 
 use core::arch::global_asm;
-global_asm!(include_str!("entry.asm"));
+global_asm!(include_str!("./arch/riscv_sbi/entry.asm"));
 
-#[panic_handler]
-fn panic(_panic: &PanicInfo<'_>) -> ! {
-    loop {}
+#[no_mangle]
+pub fn __startup_os() -> ! {
+    // clear_bss();
+    println!("Hello, world!");
+    panic!("Shutdown machine!");
 }
 
 #[lang = "eh_personality"]

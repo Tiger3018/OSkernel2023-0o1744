@@ -21,7 +21,7 @@ RUN mkdir /root/bpkg-ws && cd /root/bpkg-ws \
 FROM debian:bullseye-slim 
 RUN echo "deb http://deb.debian.org/debian bullseye-backports main" >> /etc/apt/sources.list \
 &&  apt-get update \
-&&  apt-get install curl ca-certificates make patch perl file gdb-multiarch binutils binutils-riscv64-linux-gnu g++-riscv64-linux-gnu qemu-system-misc zsh git --no-install-recommends -y \
+&&  apt-get install curl ca-certificates make patch perl file gdb-multiarch binutils binutils-riscv64-linux-gnu g++ g++-riscv64-linux-gnu qemu-system-misc zsh git --no-install-recommends -y \
 &&  apt-get install qemu-system-misc/bullseye-backports --no-install-recommends -y \
 &&  apt-get autoremove -y \
 &&  apt-get clean \
@@ -40,9 +40,14 @@ RUN mkdir /root/.build2 \
 &&  echo "#!config.import.build2 = /root/.local/share/doc/build2/" >> /root/.build2/b.options \
 &&  echo "#!config.c = gcc-10" >> /root/.build2/b.options \
 &&  echo "#!config.cxx = g++-10" >> /root/.build2/b.options \
-&&  echo "#!config.cxx.id = gcc" >> /root/.build2/b.options 
+&&  echo "#!config.cxx.id = gcc" >> /root/.build2/b.options \
+&&  sed -i "s#clang++-13#g++#" /root/bpkg-ws/build/config.build \
+&&  sed -i "s#clang++-13#g++#" /root/bpkg-ws/*/build/config.build
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended \
 &&  echo -e "zstyle ':omz:update' mode disabled\nsetopt autocd\nsetopt correct\nsetopt interactivecomments\nsetopt magicequalsubst\nsetopt numericglobsort\nsetopt promptsubst" && cat /root/.zshrc | tee /root/.zshrc \
 &&  sed -i "s#plugins=(git)#plugins=(git git-escape-magic command-not-found history history-substring-search isodate scd shell-proxy z)#" /root/.zshrc 
 
 ENV RUSTUP_UPDATE_ROOT=https://mirrors.nju.edu.cn/rustup
+# RUN useradd -s /usr/bin/zsh -d /root user \
+# &&  chmod ugo+rw -R /root
+# USER user

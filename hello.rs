@@ -1,6 +1,7 @@
 #![no_main]
 #![no_std]
 #![feature(lang_items)] // for what
+#![feature(core_panic)]
 #![feature(panic_info_message)]
 // #![warn(missing_docs)]
 

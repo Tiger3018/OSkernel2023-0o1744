@@ -13,13 +13,21 @@ const SBI_REMOTE_FENCE_I: usize = 5;
 const SBI_REMOTE_SFENCE_VMA: usize = 6;
 const SBI_REMOTE_SFENCE_VMA_ASID: usize = 7;
 
+//EID = 0x10
+const SBI_BASE_EXTENSION_EID: usize = 10;
+const SBI_GET_SPEC_VERSION_FID: usize = 10;
+
 // system reset extension
 const SRST_EXTENSION: usize = 0x53525354;
 const SBI_SHUTDOWN: usize = 0;
-//const SBI_SHUTDOWN: usize = 8;
+// const SBI_SHUTDOWN: usize = 8;
 
 pub fn console_putchar(c: usize) {
     sbi_call(SBI_CONSOLE_PUTCHAR, 0, c, 0, 0);
+}
+
+pub fn get_spec_version() -> usize {
+    sbi_call(SBI_BASE_EXTENSION_EID, SBI_GET_SPEC_VERSION_FID, 0, 0, 0)
 }
 
 /// See <https://github.com/rcore-os/rCore-Tutorial-Book-v3/issues/100#issuecomment-1475877352>

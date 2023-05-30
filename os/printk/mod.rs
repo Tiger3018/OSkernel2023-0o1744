@@ -1,4 +1,4 @@
-use crate::arch::riscv_sbi::shutdown::console_putchar;
+use crate::arch::riscv_sbi::console_putchar;
 use core::fmt::{self, Write};
 
 struct Stdout;
@@ -17,20 +17,42 @@ pub fn printk(args: fmt::Arguments) {
     Stdout.write_fmt(args).unwrap();
 }
 
-
-#[macro_export]
+//#[macro_export]
 macro_rules! print {
     ($fmt: literal $(, $($arg: tt)+)?) => {
         $crate::os::printk::printk(format_args!($fmt $(, $($arg)+)?));
     }
 }
 
-#[macro_export]
+//#[macro_export]
 macro_rules! println {
     ($fmt: literal $(, $($arg: tt)+)?) => {
         $crate::os::printk::printk(format_args!(concat!($fmt, "\n") $(, $($arg)+)?));
     }
 }
 
-// pub(crate) use print;
-// pub(crate) use println;
+// #[macro_export]
+#[cfg(debug_assertions)]
+macro_rules! debug_print {
+    ($fmt: literal $(, $($arg: tt)+)?) => {
+        $crate::os::printk::print!("[D]");
+        $crate::os::printk::print!($fmt $(, $($arg)+)?);
+    }
+}
+
+// #[macro_export]
+#[cfg(debug_assertions)]
+macro_rules! debug_println {
+    ($fmt: literal $(, $($arg: tt)+)?) => {
+        $crate::os::printk::print!("[D]");
+        $crate::os::printk::println!($fmt $(, $($arg)+)?);
+    }
+}
+
+#[doc(inline)]
+pub(crate) use {
+    print,
+    println,
+    debug_print,
+    debug_println,
+};

@@ -5,8 +5,15 @@
 // #![warn(missing_docs)]
 
 
+use os::printk::{
+    print,
+    println,
+    debug_print as dprint,
+    debug_println as dprintln,
+};
 mod os;
 mod arch;
+
 // use crate::task::{Signals, SignalStack};
 // use riscv::register::sstatus::{self, set_spp, Sstatus, SPP};
 

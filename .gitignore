@@ -12,3 +12,4 @@ sbi_qemu
 kernel-qemu
 kernel_qemu
 target/
+rustdoc/

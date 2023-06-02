@@ -9,12 +9,16 @@ RUST_CRATE_MAIN = $(shell grep exe buildfile | awk -F'[{}]' '{print $$(NF -1)}')
 RUSTC_EDITION = $(shell grep edition buildfile | awk -F' ' '{print $$(NF +0)}')
 RUSTC_DEF = RUSTC_BOOTSTRAP=1
 
-.PHONY: doc build2 qemu
+# Avoid something is up to date
+.PHONY: rustdoc build2 qemu
 
 all: build2 hyphen-move
 
-doc:
-	$(RUSTC_DEF) rustdoc $(RUST_CRATE_MAIN)  --document-private-items --edition $(RUSTC_EDITION) -o target/doc
+doc: rustdoc
+	$(info [HINTS] doc is an alias of rustdoc)
+
+rustdoc:
+	$(RUSTC_DEF) rustdoc $(RUST_CRATE_MAIN) --document-private-items --edition $(RUSTC_EDITION) -o rustdoc
 
 # Since libbuild2-rust can't determine the package's status
 # We should remove the binary and ignore the possible NOT FOUND error.

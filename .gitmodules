@@ -1,0 +1,3 @@
+[submodule "3rdparty/bitflags"]
+	path = 3rdparty/bitflags
+	url = https://github.com/bitflags/bitflags

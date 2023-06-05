@@ -2,7 +2,7 @@
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.245.0/containers/docker-existing-dockerfile
 {
 	"name": "oskernel Dev Image",
-	"image": "tiger3018/oskernel-dev:0529-with-gnu-host",
+	"image": "tiger3018/oskernel-dev:0605-with-gnu-host",
 	
 	// Sets the run context to one level up instead of the .devcontainer folder.
 	// "context": "..",

@@ -2,6 +2,14 @@
     "crates": [{
         "root_module": "hello.rs",
         "edition": "2021",
-        "deps": []
+        "deps": [{
+            "crate": 1,
+            "name": "bitflags"
+        }]
+    },{
+        "root_module": "3rdparty/bitflags/src/lib.rs",
+        "edition": "2021",
+        "deps": [
+        ]
     }]
 }

@@ -4,6 +4,7 @@
 *.sh
 *.a
 *.so
+*.rlib
 
 sdcard.img
 initrd.img

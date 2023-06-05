@@ -66,6 +66,7 @@ mod fs;
 mod io;
 mod table;
 mod time;
+mod lock;
 
 pub use crate::dir::*;
 pub use crate::dir_entry::*;

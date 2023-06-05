@@ -5,10 +5,18 @@
         "deps": [{
             "crate": 1,
             "name": "bitflags"
+        },{
+            "crate": 2,
+            "name": "fatfs"
         }]
     },{
         "root_module": "3rdparty/bitflags/src/lib.rs",
         "edition": "2021",
+        "deps": [
+        ]
+    },{
+        "root_module": "3rdparty/maturin-rust-fatfs/src/lib.rs",
+        "edition": "2018",
         "deps": [
         ]
     }]

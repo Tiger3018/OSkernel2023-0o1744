@@ -7,8 +7,8 @@ use core::convert::TryFrom;
 use core::fmt::Debug;
 use core::marker::PhantomData;
 use core::u32;
-// use lock::Mutex;
 
+use crate::lock::Mutex;
 use crate::boot_sector::{format_boot_sector, BiosParameterBlock, BootSector};
 use crate::dir::{Dir, DirRawStream};
 use crate::dir_entry::{DirFileEntryData, FileAttributes, SFN_PADDING, SFN_SIZE};

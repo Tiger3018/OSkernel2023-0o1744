@@ -1,0 +1,8 @@
+{
+    "rust-analyzer.linkedProjects": [
+        "./3rdparty/bitflags/Cargo.toml",
+        "./3rdparty/core2/Cargo.toml",
+        "./3rdparty/maturin-fscommon/Cargo.toml",
+        "./3rdparty/maturin-rust-fatfs/Cargo.toml"
+    ]
+}

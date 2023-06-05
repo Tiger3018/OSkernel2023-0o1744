@@ -9,9 +9,10 @@ using c
 using cxx
 
 config.rust = env RUSTC_BOOTSTRAP=1 rustc
-config.rust += --target=riscv64gc-unknown-none-elf --edition 2021 --crate-type=lib
+config.rust += --target=riscv64gc-unknown-none-elf --crate-type=lib --edition 2021
 using rust
 
 ./: bitflags/
-bitflags/: exe{libbitflags.rlib}
+bitflags/: exe{libbitflags.rlib} # exe{libfatfs.rlib}
 exe{libbitflags.rlib}: rs{bitflags/src/lib}
+# exe{libfatfs.rlib}: rs{rust-fatfs/src/lib}

@@ -1,16 +1,16 @@
 # See <https://seisman.github.io/how-to-write-makefile/introduction.html>
 # See <https://github.com/rust-lang/rfcs/pull/940>
-BINARY_CRATE_NAME = $(shell grep exe buildfile | awk -F'[{}]' '{print $$2}')
+BINARY_CRATE_NAME = $(shell grep 'exe{\w*}:' buildfile | awk -F'[{}]' '{print $$2}')
 BINARY_NAME := kernel-qemu
 #BUILD2_PATH = /root/.local/bin/
 #BUILD2_NAME = b
 OSCOMP_SD_CARD_IMG := sdcard.img
-RUST_CRATE_MAIN = $(shell grep exe buildfile | awk -F'[{}]' '{print $$(NF -1)}').rs
+RUST_CRATE_MAIN = $(shell grep 'exe{\w*}:' buildfile | awk -F'[{}]' '{print $$(NF -1)}').rs
 RUSTC_EDITION = $(shell grep edition buildfile | awk -F' ' '{print $$(NF +0)}')
-RUSTC_DEF = RUSTC_BOOTSTRAP=1
+RUSTC_DEF := RUSTC_BOOTSTRAP=1
 
 # Avoid something is up to date
-.PHONY: rustdoc build2 qemu
+.PHONY: rustdoc build2 build2-3rdparty make-3rdparty clean clean-project clean-3rdparty qemu
 
 all: build2 hyphen-move
 
@@ -18,18 +18,29 @@ doc: rustdoc
 	$(info [HINTS] doc is an alias of rustdoc)
 
 rustdoc:
-	$(RUSTC_DEF) rustdoc $(RUST_CRATE_MAIN) --document-private-items --edition $(RUSTC_EDITION) -o rustdoc
+	$(RUSTC_DEF) rustdoc $(RUST_CRATE_MAIN) --document-private-items --edition $(RUSTC_EDITION) --crate-name ${BINARY_CRATE_NAME} -o rustdoc ${TODO_BEGIN} -L crate=./3rdparty/ --target=riscv64gc-unknown-none-elf
 
 # Since libbuild2-rust can't determine the package's status
 # We should remove the binary and ignore the possible NOT FOUND error.
 #	-rm $(BINARY_NAME);
-build2:
+build2: clean-project make-3rdparty
 	b;
+
+build2-3rdparty:
+	b 3rdparty/
+make-3rdparty:
+	cd ./3rdparty/ && make
+
+clean: clean-project clean-3rdparty
+clean-project:
+	rm -f ${BINARY_CRATE_NAME} ${BINARY_NAME}
+clean-3rdparty:
+	rm -f 3rdparty/*.rlib
 
 hyphen-move: 
 	mv $(BINARY_CRATE_NAME) $(BINARY_NAME);
 
-qemu:
+qemu: all
 	qemu-system-riscv64 -nographic -machine virt \
 	-kernel $(BINARY_NAME) -m 128M -smp 2 
 #	-drive file=$(OSCOMP_SD_CARD_IMG),if=none,format=raw,id=x0 \

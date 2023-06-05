@@ -1,3 +1,6 @@
 [submodule "3rdparty/bitflags"]
 	path = 3rdparty/bitflags
 	url = https://github.com/bitflags/bitflags
+[submodule "3rdparty/core2"]
+	path = 3rdparty/core2
+	url = https://github.com/technocreatives/core2

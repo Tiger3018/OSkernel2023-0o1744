@@ -13,7 +13,7 @@ using cxx
 config.rust = env RUSTC_BOOTSTRAP=1 rustc
 config.rust += --target=riscv64gc-unknown-none-elf --crate-type=bin --edition 2021 
 config.rust += -Clink-arg=-T./arch/qemu.ld
-config.rust += --extern bitflags=./3rdparty/libbitflags.rlib
+config.rust += -L crate=./3rdparty/
 using rust
 
 #./: 3rdparty/ exe{kernel_qemu}

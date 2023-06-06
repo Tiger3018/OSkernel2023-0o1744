@@ -1,16 +1,18 @@
 # See <https://seisman.github.io/how-to-write-makefile/introduction.html>
 # See <https://github.com/rust-lang/rfcs/pull/940>
 BINARY_CRATE_NAME = $(shell grep 'exe{\w*}:' buildfile | awk -F'[{}]' '{print $$2}')
-BINARY_NAME := kernel-qemu
-#BUILD2_PATH = /root/.local/bin/
-#BUILD2_NAME = b
-OSCOMP_SD_CARD_IMG := sdcard.img
+BINARY_NAME ?= kernel-qemu
+BUILD2_PATH ?= /root/.local/bin/
+BUILD2_NAME ?= b
+OSCOMP_SD_CARD_IMG ?= sdcard.img
 RUST_CRATE_MAIN = $(shell grep 'exe{\w*}:' buildfile | awk -F'[{}]' '{print $$(NF -1)}').rs
 RUSTC_EDITION = $(shell grep edition buildfile | awk -F' ' '{print $$(NF +0)}')
-RUSTC_DEF := RUSTC_BOOTSTRAP=1
+RUSTC_DEF ?= RUSTC_BOOTSTRAP=1
+
+export PATH := $(BUILD2_PATH):$(PATH)
 
 # Avoid something is up to date
-.PHONY: rustdoc build2 build2-3rdparty make-3rdparty clean clean-project clean-3rdparty qemu
+.PHONY: rustdoc build2 build2-3rdparty make-3rdparty clean clean-project clean-3rdparty qemu test-copy
 
 all: build2 hyphen-move
 
@@ -23,19 +25,22 @@ rustdoc:
 # Since libbuild2-rust can't determine the package's status
 # We should remove the binary and ignore the possible NOT FOUND error.
 #	-rm $(BINARY_NAME);
-build2: clean-project make-3rdparty
-	b;
+build2: clean-project 3rdparty/
+	$(BUILD2_NAME);
 
 build2-3rdparty:
-	b 3rdparty/
+	$(BUILD2_NAME) 3rdparty/
 make-3rdparty:
 	cd ./3rdparty/ && make
+3rdparty/: make-3rdparty
 
 clean: clean-project clean-3rdparty
 clean-project:
 	rm -f ${BINARY_CRATE_NAME} ${BINARY_NAME}
 clean-3rdparty:
 	rm -f 3rdparty/*.rlib
+	rm -f 3rdparty/*/Cargo.lock
+	rm -rf 3rdparty/*/target
 
 hyphen-move: 
 	mv $(BINARY_CRATE_NAME) $(BINARY_NAME);
@@ -46,3 +51,7 @@ qemu: all
 #	-drive file=$(OSCOMP_SD_CARD_IMG),if=none,format=raw,id=x0 \
 #	-device virtio-blk-device,drive=x0,bus=virtio-mmio-bus.0
 #	-kernel $(BINARY_NAME) -append "root=/dev/vda ro console=ttyS0"
+
+test-copy: 
+	tar -C / -xf ./offline/tar/ws.tar
+	tar -xf ./offline/tar/3rdparty.tar

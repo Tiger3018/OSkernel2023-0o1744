@@ -1,8 +1,8 @@
 c.std = c17
 cxx.std = c++17
 
-config.c = riscv64-linux-gnu-gcc
-config.cxx = riscv64-linux-gnu-g++
+config.c = gcc
+config.cxx = g++ # since there is not riscv64-linux-gnu-g++ in test
 cc.coptions += -nostdlib
 
 #config.import.libbuild2_rust = /root/bpkg-ws

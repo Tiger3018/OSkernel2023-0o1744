@@ -4,3 +4,6 @@
 [submodule "3rdparty/core2"]
 	path = 3rdparty/core2
 	url = https://github.com/technocreatives/core2
+[submodule "3rdparty/riscv"]
+	path = 3rdparty/riscv
+	url = https://github.com/rust-embedded/riscv

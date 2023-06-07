@@ -1,8 +1,13 @@
 {
-    "rust-analyzer.linkedProjects": [
-        "./3rdparty/bitflags/Cargo.toml",
-        "./3rdparty/core2/Cargo.toml",
-        "./3rdparty/maturin-fscommon/Cargo.toml",
-        "./3rdparty/maturin-rust-fatfs/Cargo.toml"
-    ]
+  "rust-analyzer.linkedProjects": [
+    //     "./3rdparty/bitflags/Cargo.toml",
+    //     "./3rdparty/core2/Cargo.toml",
+    //     "./3rdparty/maturin-fscommon/Cargo.toml",
+    // "./3rdparty/maturin-rust-fatfs/Cargo.toml"
+  ],
+  "rust-analyzer.cargo.noDefaultFeatures": true,
+  "rust-analyzer.cargo.features": [""],
+  "rust-analyzer.check.allTargets": false,
+  "rust-analyzer.cargo.target": "riscv64gc-unknown-none-elf",
+  "rust-analyzer.showUnlinkedFileNotification": false
 }

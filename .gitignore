@@ -1,10 +1,13 @@
 *.d
 *.o
-*.log
-*.sh
 *.a
 *.so
 *.rlib
+*.elf
+
+*.log
+*.tar
+# *.sh
 
 sdcard.img
 initrd.img

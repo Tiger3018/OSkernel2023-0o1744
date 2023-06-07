@@ -1,7 +1,10 @@
 #![allow(unused)]
 
 use core::arch::asm;
-pub mod shutdown;
+#[cfg(not(feature = "user_lib"))]
+pub mod power;
+#[cfg(not(feature = "user_lib"))]
+pub mod entry;
 
 // legacy extensions: ignore fid
 const SBI_SET_TIMER: usize = 0;
@@ -19,15 +22,25 @@ const SBI_GET_SPEC_VERSION_FID: usize = 10;
 
 // system reset extension
 const SRST_EXTENSION: usize = 0x53525354;
-const SBI_SHUTDOWN: usize = 0;
-// const SBI_SHUTDOWN: usize = 8;
+// const SBI_SHUTDOWN: usize = 0;
+const SBI_SHUTDOWN: usize = 8;
+
+/// from crate semver
+#[derive(Debug)]
+pub struct Version {
+    pub major:u64,
+    pub minor:u64,
+    pub patch:u64,
+}
 
 pub fn console_putchar(c: usize) {
     sbi_call(SBI_CONSOLE_PUTCHAR, 0, c, 0, 0);
 }
 
-pub fn get_spec_version() -> usize {
-    sbi_call(SBI_BASE_EXTENSION_EID, SBI_GET_SPEC_VERSION_FID, 0, 0, 0)
+#[cfg(not(feature = "user_lib"))]
+pub fn get_spec_version() -> Version {
+    let version_raw:usize = sbi_call(SBI_BASE_EXTENSION_EID, SBI_GET_SPEC_VERSION_FID, 0, 0, 0);
+    Version { major: (0), minor: (0), patch: (0) }
 }
 
 /// See <https://github.com/rcore-os/rCore-Tutorial-Book-v3/issues/100#issuecomment-1475877352>

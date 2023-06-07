@@ -1,0 +1,25 @@
+c.std = c17
+cxx.std = c++17
+
+config.c = gcc
+config.cxx = g++ # since there is not riscv64-linux-gnu-g++ in test
+cc.coptions += -nostdlib
+
+#config.import.libbuild2_rust = /root/bpkg-ws
+
+using c
+using cxx
+
+config.rust = env RUSTC_BOOTSTRAP=1 rustc
+config.rust += --target=riscv64gc-unknown-none-elf --crate-type=bin --edition 2021 
+# config.rust += -Clink-arg=-T./arch/qemu.ld
+config.rust += --cfg 'feature="user_lib"'
+config.rust += -L ../3rdparty/
+using rust
+
+#./: 3rdparty/ exe{kernel_qemu}
+#include 3rdparty/
+
+#lib{os}: rs{os/panic.rs}
+
+[rule_hint=rust] exe{init.elf}: rs{init}

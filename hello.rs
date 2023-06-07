@@ -3,30 +3,24 @@
 #![feature(lang_items)] // for what
 #![feature(core_panic)]
 #![feature(panic_info_message)]
+//#![feature(rustc_attrs)] // #[rustc_builtin_macro]
 // #![warn(missing_docs)]
 
+extern crate bitflags;
 
-use os::printk::{
-    print,
-    println,
-    debug_print as dprint,
-    debug_println as dprintln,
-};
-mod os;
 mod arch;
+mod config;
+mod os;
 
-// use crate::task::{Signals, SignalStack};
-// use riscv::register::sstatus::{self, set_spp, Sstatus, SPP};
+use os::printk::{debug_print as dprint, debug_println as dprintln, print, println};
 
-/// TODO
-/// 
-use core::arch::global_asm;
-global_asm!(include_str!("./arch/riscv_sbi/entry.asm"));
-
+// use arch::riscv_sbi::entry;
 #[no_mangle]
-pub fn __startup_os() -> ! {
-    // clear_bss();
-    println!("Hello, world!");
+pub fn startup_os() -> ! {
+    crate::println!("= S Mode Kernel ({}) =", file!());
+    os::mm::init();
+    crate::println!("Hello, world!");
+    crate::print!("{:?}\n", crate::arch::riscv_sbi::get_spec_version());
     panic!("Shutdown machine!");
 }
 

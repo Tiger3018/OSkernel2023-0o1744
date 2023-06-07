@@ -3,10 +3,20 @@
         "root_module": "hello.rs",
         "edition": "2021",
         "deps": [{
-            "crate": 1,
+            "crate": 2,
             "name": "bitflags"
         },{
+            "crate": 3,
+            "name": "fatfs"
+        }]
+    },{
+        "root_module": "bin/init.rs",
+        "edition": "2021",
+        "deps": [{
             "crate": 2,
+            "name": "bitflags"
+        },{
+            "crate": 3,
             "name": "fatfs"
         }]
     },{
@@ -17,6 +27,11 @@
     },{
         "root_module": "3rdparty/maturin-rust-fatfs/src/lib.rs",
         "edition": "2018",
+        "deps": [
+        ]
+    },{
+        "root_module": "3rdparty/riscv/src/lib.rs",
+        "edition": "2021",
         "deps": [
         ]
     }]
